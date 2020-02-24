@@ -1,4 +1,4 @@
-package com.example.webCrawler;
+package com.example.springwebcrawler;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +8,7 @@ class WebCrawlerApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// TODO implement end to end testing
 	}
 
 }
