@@ -22,53 +22,45 @@ public class RestaurantDataCleanser implements ItemProcessor<Restaurant, Restaur
 		return restaurant;
 	}
 
-	private void cleanReview(Restaurant restaurant) {
+	static void cleanReview(Restaurant restaurant) {
 		String updatedReview = restaurant.getReviewCount();
-		log.trace("cleaning updatedReview count: {}", updatedReview);
 		if (StringUtils.isNumeric(updatedReview)) {
-			updatedReview = updatedReview.trim();
-		} else {
-			updatedReview = updatedReview.substring(1, updatedReview.length() - 1);
+			return;
 		}
+		updatedReview = updatedReview.substring(1, updatedReview.length() - 1);
 		restaurant.setReviewCount(updatedReview);
 	}
 
-	private void cleanDeliveryCost(Restaurant restaurant) {
+	static void cleanDeliveryCost(Restaurant restaurant) {
 		String deliveryCost = restaurant.getDeliveryCost();
-		log.trace("cleaning delivery cost: {}", deliveryCost);
-		if (StringUtils.isBlank(deliveryCost) || StringUtils.isNumeric(deliveryCost)) {
-			log.warn("delivery cost is {}", deliveryCost);
+		if (StringUtils.isBlank(deliveryCost)) {
 			return;
 		}
+		deliveryCost = deliveryCost.trim();
 		if (deliveryCost.equals("FREE")) {
 			restaurant.setDeliveryCost("0");
+		} else if (!deliveryCost.startsWith("€")) {
+			log.info("skipping delivery cost: {}", restaurant);
 		} else {
-			try {
-				String newDeliveryCost = deliveryCost.substring(2).replace(',', '.');
-				restaurant.setDeliveryCost(newDeliveryCost);
-			} catch (StringIndexOutOfBoundsException e) {
-				log.warn("cannot parse deliveryCost for {}", restaurant);
-			}
+			String newDeliveryCost = deliveryCost.substring(1).replace(',', '.').trim();
+			restaurant.setDeliveryCost(newDeliveryCost);
 		}
 	}
 
-	private void cleanDeliveryTime(Restaurant restaurant) {
+	static void cleanDeliveryTime(Restaurant restaurant) {
 		String deliveryTime = restaurant.getDeliveryTimeMinutes();
-		log.trace("cleaning delivery time: {}", deliveryTime);
-		if (StringUtils.isBlank(deliveryTime) || StringUtils.isNumeric(deliveryTime)) {
-			log.warn("delivery time is {}", deliveryTime);
+		if (StringUtils.isBlank(deliveryTime)) {
 			return;
 		}
 		if (deliveryTime.startsWith("Closed") || deliveryTime.startsWith("From")) {
 			restaurant.setDeliveryTimeMinutes(null);
-		} else {
-			try {
-				deliveryTime = deliveryTime.substring(4, deliveryTime.length() - 3);
-				restaurant.setDeliveryTimeMinutes(deliveryTime);
-			} catch (StringIndexOutOfBoundsException e) {
-				log.warn("cannot parse deliveryTime for {}", restaurant);
-			}
+			return;
 		}
+		if (!deliveryTime.startsWith("est")) {
+			log.info("skipping delivery time: {}", restaurant);
+			return;
+		}
+		deliveryTime = deliveryTime.substring(4, deliveryTime.length() - 3);
+		restaurant.setDeliveryTimeMinutes(deliveryTime);
 	}
-
 }

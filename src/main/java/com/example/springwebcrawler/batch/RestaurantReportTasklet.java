@@ -109,7 +109,7 @@ public class RestaurantReportTasklet implements Tasklet {
 				.sorted(Collections.reverseOrder(Entry.comparingByValue())).collect(
 						Collectors.toMap(
 								Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-		log.info("sortedCuisineMap: {}", sortedResult);
+		log.debug("sortedCuisineMap: {}", sortedResult);
 		return sortedResult;
 	}
 

@@ -32,6 +32,7 @@ public class TakeawayWebScraper implements ItemReader<Restaurant> {
 	}
 
 	private Restaurant parseElement(Element restaurant, int index) {
+		log.trace("retrieve from scraper: {}", restaurant);
 		String review = restaurant.getElementsByClass("rating-total").text();
 
 		Element details = restaurant.getElementsByClass("detailswrapper").first();
@@ -49,13 +50,18 @@ public class TakeawayWebScraper implements ItemReader<Restaurant> {
 		result.setJobId(jobId);
 		result.setId(index);
 		result.setName(name);
-		result.setDetailsUrl(this.uri.getScheme() + "://" + this.uri.getHost() + url);
+		String detailsUrl = getDetailsUrl(url);
+		result.setDetailsUrl(detailsUrl);
 		result.setCuisines(cuisines);
 		result.setDeliveryCost(deliveryCost);
 		result.setDeliveryTimeMinutes(deliveryTime);
 		result.setReviewCount(review);
-		log.trace("{}", restaurant);
+		log.debug("retrieve from scraper: {}", result);
 		return result;
+	}
+
+	private String getDetailsUrl(String url) {
+		return this.uri.getScheme() + "://" + this.uri.getHost() + url;
 	}
 
 	@Override

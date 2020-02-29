@@ -47,7 +47,7 @@ public class JobController {
 
 		//noinspection ConstantConditions
 		if (apiKey == null) {
-			log.info("Cannot create global unique restaurant ID due to no google apiKey");
+			log.info("No apiKey parameter. Cannot create global unique restaurant IDs");
 		}
 		JobExecution jobExecution = jobLauncher.run(takeawayJob, parameters);
 		JobResponse jobResponse = new JobResponse(jobExecution);
