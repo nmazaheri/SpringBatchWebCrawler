@@ -6,7 +6,7 @@ import java.util.Objects;
 public class RestaurantId implements Serializable {
 
 	private Integer id;
-	private Integer jobId;
+	private Long jobId;
 
 	public Integer getId() {
 		return id;
@@ -16,11 +16,11 @@ public class RestaurantId implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getJobId() {
+	public Long getJobId() {
 		return jobId;
 	}
 
-	public void setJobId(Integer jobId) {
+	public void setJobId(Long jobId) {
 		this.jobId = jobId;
 	}
 

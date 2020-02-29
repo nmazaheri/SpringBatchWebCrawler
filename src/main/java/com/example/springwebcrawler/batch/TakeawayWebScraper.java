@@ -18,11 +18,11 @@ public class TakeawayWebScraper implements ItemReader<Restaurant> {
 	private static final Logger log = LoggerFactory.getLogger(TakeawayWebScraper.class);
 
 	private URI uri;
-	private Integer jobId;
+	private Long jobId;
 	private List<Element> restaurants;
 	private AtomicInteger index;
 
-	public TakeawayWebScraper(String url, Integer jobId) throws IOException, URISyntaxException {
+	public TakeawayWebScraper(String url, Long jobId) throws IOException, URISyntaxException {
 		this.jobId = jobId;
 		this.uri = new URI(url);
 		log.debug("retrieving dom for {}", url);
@@ -31,7 +31,7 @@ public class TakeawayWebScraper implements ItemReader<Restaurant> {
 		index = new AtomicInteger(0);
 	}
 
-	private Restaurant parseElement(Element restaurant, int index) {
+	private Restaurant parseElement(Element restaurant, Integer index) {
 		log.trace("retrieve from scraper: {}", restaurant);
 		String review = restaurant.getElementsByClass("rating-total").text();
 

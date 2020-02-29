@@ -12,7 +12,7 @@ import org.springframework.core.task.TaskExecutor;
 @Configuration
 public class SharedBatchConfig {
 
-	private static final int MAX_JOB_THREADS = 10;
+	private static final int MAX_JOB_THREADS = 3;
 
 	@Bean
 	public TaskExecutor jobTaskExecutor() {

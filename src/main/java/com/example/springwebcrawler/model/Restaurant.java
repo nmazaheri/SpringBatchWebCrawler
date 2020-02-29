@@ -16,7 +16,7 @@ public class Restaurant {
 	@Id
 	private Integer id;
 	@Id
-	private Integer jobId;
+	private Long jobId;
 	private String name;
 	private String deliveryCost;
 	private String deliveryTimeMinutes;
@@ -36,11 +36,11 @@ public class Restaurant {
 		this.id = id;
 	}
 
-	public Integer getJobId() {
+	public Long getJobId() {
 		return jobId;
 	}
 
-	public void setJobId(Integer jobId) {
+	public void setJobId(Long jobId) {
 		this.jobId = jobId;
 	}
 

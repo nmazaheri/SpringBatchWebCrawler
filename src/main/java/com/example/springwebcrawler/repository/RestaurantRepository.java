@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
 	@Query("SELECT r FROM Restaurant r WHERE r.jobId = :jobId")
-	List<Restaurant> findByJobId(int jobId);
+	List<Restaurant> findByJobId(Long jobId);
 }

@@ -49,7 +49,7 @@ public class RestaurantGlobalIdentifier implements ItemProcessor<Restaurant, Res
 		restaurant.setLatitude(latitude);
 		restaurant.setLongitude(longitude);
 
-		int globalIdentifier = Objects.hash(restaurant.getName(), latitude, longitude);
+		Integer globalIdentifier = Objects.hash(restaurant.getName(), latitude, longitude);
 		restaurant.setId(globalIdentifier);
 	}
 

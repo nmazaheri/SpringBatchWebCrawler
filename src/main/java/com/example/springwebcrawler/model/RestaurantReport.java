@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 public class RestaurantReport {
 
 	@Id
-	private Integer jobId;
+	private Long jobId;
 	private Integer restaurantCount;
 	private Integer uniqueZipCodeCount;
 	private String mostPopularCuisine;
@@ -20,11 +20,11 @@ public class RestaurantReport {
 	@OneToOne(targetEntity = DistributionSummary.class, cascade = CascadeType.ALL)
 	private DistributionSummary deliveryTimeDistribution;
 
-	public Integer getJobId() {
+	public Long getJobId() {
 		return jobId;
 	}
 
-	public void setJobId(Integer jobId) {
+	public void setJobId(Long jobId) {
 		this.jobId = jobId;
 	}
 

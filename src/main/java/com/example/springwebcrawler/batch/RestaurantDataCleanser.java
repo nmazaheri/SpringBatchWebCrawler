@@ -39,8 +39,6 @@ public class RestaurantDataCleanser implements ItemProcessor<Restaurant, Restaur
 		deliveryCost = deliveryCost.trim();
 		if (deliveryCost.equals("FREE")) {
 			restaurant.setDeliveryCost("0");
-		} else if (!deliveryCost.startsWith("€")) {
-			log.info("skipping delivery cost: {}", restaurant);
 		} else {
 			String newDeliveryCost = deliveryCost.substring(1).replace(',', '.').trim();
 			restaurant.setDeliveryCost(newDeliveryCost);
@@ -54,10 +52,6 @@ public class RestaurantDataCleanser implements ItemProcessor<Restaurant, Restaur
 		}
 		if (deliveryTime.startsWith("Closed") || deliveryTime.startsWith("From")) {
 			restaurant.setDeliveryTimeMinutes(null);
-			return;
-		}
-		if (!deliveryTime.startsWith("est")) {
-			log.info("skipping delivery time: {}", restaurant);
 			return;
 		}
 		deliveryTime = deliveryTime.substring(4, deliveryTime.length() - 3);

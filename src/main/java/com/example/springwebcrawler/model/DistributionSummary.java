@@ -17,6 +17,7 @@ public class DistributionSummary {
 	private Double variance;
 	private Double minimum;
 	private Double maximum;
+	private Long count;
 
 	public void setStatisticsSummary(StatisticalSummary summary) {
 		setAverage(summary.getMean());
@@ -24,6 +25,7 @@ public class DistributionSummary {
 		setMaximum(summary.getMax());
 		setStandardDeviation(summary.getStandardDeviation());
 		setVariance(summary.getVariance());
+		setCount(summary.getN());
 	}
 
 	public Long getId() {
@@ -72,5 +74,13 @@ public class DistributionSummary {
 
 	public void setMaximum(Double maximum) {
 		this.maximum = maximum;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
 	}
 }

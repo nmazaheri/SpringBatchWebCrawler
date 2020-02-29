@@ -39,7 +39,7 @@ public class RestaurantReportTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-		int jobId = contribution.getStepExecution().getJobExecutionId().intValue();
+		Long jobId = contribution.getStepExecution().getJobExecutionId();
 		List<Restaurant> restaurants = restaurantRepository.findByJobId(jobId);
 
 		RestaurantReport restaurantReport = new RestaurantReport();

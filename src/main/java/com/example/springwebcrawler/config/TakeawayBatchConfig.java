@@ -30,7 +30,7 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 @EnableBatchProcessing
 public class TakeawayBatchConfig {
 
-	private static final int RETRY_LIMIT = 20;
+	private static final int RETRY_LIMIT = 6;
 	private static final int CHUNK_SIZE = 10;
 
 	@Bean
@@ -49,14 +49,13 @@ public class TakeawayBatchConfig {
 			ItemWriter<Restaurant> restaurantDBWriter, CompositeItemProcessor takeawayRestaurantProcessor,
 			TaskExecutor jobTaskExecutor) {
 		return stepBuilderFactory.get("RetrieveTakeawayData")
-//				.allowStartIfComplete(true) // TODO investigate this functionality
 				.<Restaurant, Restaurant>chunk(CHUNK_SIZE)
-				.reader(TakeawayWebScraperBean)
-				.processor(takeawayRestaurantProcessor).faultTolerant().retryLimit(RETRY_LIMIT)
+				.faultTolerant().retryLimit(RETRY_LIMIT).processorNonTransactional()
 				.backOffPolicy(new ExponentialBackOffPolicy()).retry(SocketTimeoutException.class)
+				.reader(TakeawayWebScraperBean)
+				.processor(takeawayRestaurantProcessor)
 				.writer(restaurantDBWriter)
-				.taskExecutor(jobTaskExecutor)
-				.build();
+				.taskExecutor(jobTaskExecutor).build();
 	}
 
 	@Bean
@@ -80,7 +79,7 @@ public class TakeawayBatchConfig {
 	@Bean
 	@StepScope
 	public ItemReader<Restaurant> TakeawayWebScraperBean(
-			@Value("#{stepExecution.getJobExecutionId()}") Integer jobId,
+			@Value("#{stepExecution.getJobExecutionId()}") Long jobId,
 			@Value("#{jobParameters[url]}") String url) throws IOException, URISyntaxException {
 		return new TakeawayWebScraper(url, jobId);
 	}

@@ -4,7 +4,7 @@ import org.springframework.batch.core.StepExecution;
 
 public class JobStatus {
 
-	private long id;
+	private long stepId;
 	private int writeCount;
 	private int readCount;
 	private int commitCount;
@@ -14,7 +14,7 @@ public class JobStatus {
 	private int writeSkipCount;
 
 	public JobStatus(StepExecution execution) {
-		id = execution.getId();
+		stepId = execution.getId();
 		writeCount = execution.getWriteCount();
 		readCount = execution.getReadCount();
 		commitCount = execution.getCommitCount();
