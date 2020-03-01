@@ -8,7 +8,6 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 
-@SuppressWarnings("unused")
 public class JobResponse {
 
 	private JobInstance jobInstance;

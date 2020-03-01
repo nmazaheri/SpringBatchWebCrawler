@@ -24,7 +24,9 @@ import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RestaurantReportTasklet implements Tasklet {
 
 	private static final Logger log = LoggerFactory.getLogger(RestaurantReportTasklet.class);
@@ -41,6 +43,7 @@ public class RestaurantReportTasklet implements Tasklet {
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
 		Long jobId = contribution.getStepExecution().getJobExecutionId();
 		List<Restaurant> restaurants = restaurantRepository.findByJobId(jobId);
+		log.trace("creating report for {}", restaurants);
 
 		RestaurantReport restaurantReport = new RestaurantReport();
 		restaurantReport.setJobId(jobId);
@@ -59,7 +62,7 @@ public class RestaurantReportTasklet implements Tasklet {
 		restaurantReport.setDeliveryTimeDistribution(deliveryTimeEntity);
 
 		// TODO: add sanity check
-
+		log.trace("{}", restaurantReport);
 		restaurantReportRepository.save(restaurantReport);
 		return RepeatStatus.FINISHED;
 	}

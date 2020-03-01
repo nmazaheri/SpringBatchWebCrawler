@@ -2,6 +2,7 @@ package com.example.springwebcrawler.config;
 
 import com.example.springwebcrawler.batch.RestaurantDataCleanser;
 import com.example.springwebcrawler.batch.RestaurantGlobalIdentifier;
+import com.example.springwebcrawler.batch.RestaurantReportTasklet;
 import com.example.springwebcrawler.batch.TakeawayRestaurantWebScraper;
 import com.example.springwebcrawler.batch.TakeawayWebScraper;
 import com.example.springwebcrawler.model.Restaurant;
@@ -31,7 +32,7 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 public class TakeawayBatchConfig {
 
 	private static final int RETRY_LIMIT = 6;
-	private static final int CHUNK_SIZE = 10;
+	private static final int CHUNK_SIZE = 20;
 
 	@Bean
 	public Job takeawayJob(JobBuilderFactory jobBuilderFactory, Step retrieveTakeawayData,
@@ -40,6 +41,14 @@ public class TakeawayBatchConfig {
 				.incrementer(new RunIdIncrementer())
 				.start(retrieveTakeawayData)
 				.next(generateRestaurantReport)
+				.build();
+	}
+
+	@Bean
+	public Step generateRestaurantReport(
+			StepBuilderFactory stepBuilderFactory, RestaurantReportTasklet restaurantReportTaskletBean) {
+		return stepBuilderFactory.get("GenerateRestaurantReport")
+				.tasklet(restaurantReportTaskletBean)
 				.build();
 	}
 

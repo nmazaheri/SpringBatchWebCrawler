@@ -34,14 +34,17 @@ public class RestaurantGlobalIdentifier implements ItemProcessor<Restaurant, Res
 		if (context == null) {
 			return restaurant;
 		}
+		log.debug("requesting geocode for {}", restaurant);
 		GeocodingResult[] results = GeocodingApi.geocode(context, restaurant.getAddress()).await();
 		if (results.length > 0) {
 			updateRestaurant(restaurant, results[0]);
 		}
+		log.trace("processed {}", restaurant);
 		return restaurant;
 	}
 
 	private void updateRestaurant(Restaurant restaurant, GeocodingResult result) {
+		log.trace("google result {}", result);
 		LatLng location = result.geometry.location;
 		String latitude = String.valueOf(location.lat);
 		String longitude = String.valueOf(location.lng);

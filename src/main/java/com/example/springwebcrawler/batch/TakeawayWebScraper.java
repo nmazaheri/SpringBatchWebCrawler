@@ -31,11 +31,11 @@ public class TakeawayWebScraper implements ItemReader<Restaurant> {
 		index = new AtomicInteger(0);
 	}
 
-	private Restaurant parseElement(Element restaurant, Integer index) {
-		log.trace("retrieve from scraper: {}", restaurant);
-		String review = restaurant.getElementsByClass("rating-total").text();
+	private Restaurant parseElement(Element restaurantElement, Integer index) {
+		log.trace("scraper result {}", restaurantElement);
+		String review = restaurantElement.getElementsByClass("rating-total").text();
 
-		Element details = restaurant.getElementsByClass("detailswrapper").first();
+		Element details = restaurantElement.getElementsByClass("detailswrapper").first();
 		Element header = details.getElementsByTag("a").first();
 
 		String name = header.text();
@@ -46,18 +46,18 @@ public class TakeawayWebScraper implements ItemReader<Restaurant> {
 		String deliveryCost = deliveryBar.getElementsByClass("delivery-cost").text();
 		String deliveryTime = deliveryBar.getElementsByClass("avgdeliverytimefull").text();
 
-		Restaurant result = new Restaurant();
-		result.setJobId(jobId);
-		result.setId(index);
-		result.setName(name);
+		Restaurant restaurant = new Restaurant();
+		restaurant.setJobId(jobId);
+		restaurant.setId(index);
+		restaurant.setName(name);
 		String detailsUrl = getDetailsUrl(url);
-		result.setDetailsUrl(detailsUrl);
-		result.setCuisines(cuisines);
-		result.setDeliveryCost(deliveryCost);
-		result.setDeliveryTimeMinutes(deliveryTime);
-		result.setReviewCount(review);
-		log.debug("retrieve from scraper: {}", result);
-		return result;
+		restaurant.setDetailsUrl(detailsUrl);
+		restaurant.setCuisines(cuisines);
+		restaurant.setDeliveryCost(deliveryCost);
+		restaurant.setDeliveryTimeMinutes(deliveryTime);
+		restaurant.setReviewCount(review);
+		log.debug("creating {}", restaurant);
+		return restaurant;
 	}
 
 	private String getDetailsUrl(String url) {
